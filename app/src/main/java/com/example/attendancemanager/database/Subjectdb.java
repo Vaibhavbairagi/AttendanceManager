@@ -86,8 +86,9 @@ public class Subjectdb extends SQLiteOpenHelper
 
                 subjectlist.add(subject);
             }while (cursor.moveToNext());
-
         }
+
+        return subjectlist;
     }
 
 
