@@ -8,18 +8,28 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.attendancemanager.pojos.ClassRecord;
 import com.example.attendancemanager.pojos.Subject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Subjectdb extends SQLiteOpenHelper
 {
     private static final int databaseversion=1;
     private static String databasename="attendmandb";
+
     private static String table_subjects="subjects";
     private static String subjects_name="subjectname";
     private static String subjects_teacher="teachername";
     private static String subjects_credits="credits";
+
+    private static String table_dates="dates";
+    private static String dates_subjectname="subjectname";
+    private static String dates_date="date";
+    private static String dates_attended="attended";
+    private static String dates_topics="topics";
+
 
     public Subjectdb(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, databasename, null, databaseversion);
@@ -33,7 +43,15 @@ public class Subjectdb extends SQLiteOpenHelper
                 subjects_credits+" integer"+
                 ");";
 
+        String create_table_dates="create table "+table_dates+"("+
+                dates_subjectname+" varchar primary key,"+
+                dates_date+" varchar,"+
+                dates_attended+" integer,"+
+                dates_topics+" text"+
+                ");";
+
         db.execSQL(create_table_subjects);
+        db.execSQL(create_table_dates);
     }
 
     @Override
@@ -72,9 +90,7 @@ public class Subjectdb extends SQLiteOpenHelper
         String query="select * from "+table_subjects;
 
         SQLiteDatabase db=this.getReadableDatabase();
-
         Cursor cursor=db.rawQuery(query,null);
-
         if(cursor.moveToFirst())
         {
             do
@@ -91,5 +107,65 @@ public class Subjectdb extends SQLiteOpenHelper
         return subjectlist;
     }
 
+    /*-------------------------------------------------------------------*/
 
+    public void addclassrecord(ClassRecord record)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues values=new ContentValues();
+
+        values.put(dates_subjectname,record.getName());
+        values.put(dates_date,record.getDate());
+        values.put(dates_attended,record.getAttended());
+
+        if(record.getTopics()!=null)
+            values.put(dates_topics,record.getTopics());
+
+        db.insert(table_dates,null,values);
+    }
+
+    public void changeattendedstatus(ClassRecord record)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(dates_attended,record.getAttended());
+
+        db.update(table_dates,values,dates_subjectname+"=? AND "+dates_date+"=?",
+                new String[] {String.valueOf(record.getName()), String.valueOf(record.getDate())});
+    }
+
+    public void modifytopics(ClassRecord record)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(dates_topics,record.getTopics());
+
+        db.update(table_dates,values,dates_subjectname+"=? AND "+dates_date+"=?",
+                new String[] {String.valueOf(record.getName()),String.valueOf(record.getDate())});
+    }
+
+    public List<ClassRecord> getAllClassRecords(String subjectname)
+    {
+        SQLiteDatabase db=this.getReadableDatabase();
+        ArrayList<ClassRecord> classrecordlist=new ArrayList<>();
+
+        String query="select * from "+table_dates+" where "+dates_subjectname+" =?";
+        Cursor cursor=db.rawQuery(query,new String[] {subjectname});
+
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                ClassRecord record=new ClassRecord();
+                record.setName(cursor.getString(0));
+                record.setDate(cursor.getString(1));;
+                record.setAttended(cursor.getInt(2));
+                record.setTopics(cursor.getString(3));
+            } while(cursor.moveToNext());
+        }
+
+        return classrecordlist;
+    }
+
+    /*-----------------------------------------------------------------------*/
 }
