@@ -1,14 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:id="@+id/subject_name"
-        android:text="Subject Name"
-        android:textColor="@color/black"
-        android:layout_margin="20dp"/>
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp"
+    android:elevation="5dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="10dp"
+                android:elevation="0dp"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="0dp">
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/subject_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:text="Subject Name"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/ra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/l1"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp">
+
+            <TextView
+                android:id="@+id/ta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Attendance:"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/sub_attendance_fraction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@+id/ta"
+                android:text="18/18"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/sub_attendance_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ra"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_toStartOf="@+id/rb"
+            android:text="Status: You may leave next 7 classes"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <RelativeLayout
+            android:id="@+id/rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp">
+
+            <RelativeLayout
+                android:id="@+id/rc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <ProgressBar
+                    android:id="@+id/attendence_progress"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:max="100"
+                    android:progressDrawable="@drawable/circle_progress"/>
+
+                <TextView
+                    android:id="@+id/sub_attendance_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="100%"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rc"
+                android:layout_centerHorizontal="true">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    app:cardCornerRadius="20dp">
+
+                    <ImageButton
+                        android:id="@+id/class_attended_imgbtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@color/colorPrimary"
+                        android:padding="5dp"
+                        android:src="@drawable/check_vector_white_24dp" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    app:cardCornerRadius="20dp">
+
+                    <ImageButton
+                        android:id="@+id/class_not_attended_imgbtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="#ff0000"
+                        android:padding="5dp"
+                        android:src="@drawable/close_vector_white_24dp" />
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

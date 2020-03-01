@@ -21,7 +21,7 @@ public class Subjectdb extends SQLiteOpenHelper
     private static String subjects_teacher="teachername";
     private static String subjects_credits="credits";
 
-    public Subjectdb(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public Subjectdb(@Nullable Context context) {
         super(context, databasename, null, databaseversion);
     }
 
