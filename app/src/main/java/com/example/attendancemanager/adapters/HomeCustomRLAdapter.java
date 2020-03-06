@@ -1,6 +1,7 @@
 package com.example.attendancemanager.adapters;
 
 import android.content.Context;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +26,12 @@ public class HomeCustomRLAdapter extends RecyclerView.Adapter<HomeCustomRLAdapte
 
     private Context context;
     private ArrayList<Subject> subjects;
+    private Subjectdb db;
 
     public HomeCustomRLAdapter(ArrayList<Subject> subjects, Context context) {
         this.subjects=subjects;
         this.context = context;
+        db = new Subjectdb(context);
     }
 
     @NonNull
@@ -39,31 +42,43 @@ public class HomeCustomRLAdapter extends RecyclerView.Adapter<HomeCustomRLAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeRLViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final HomeRLViewHolder holder, int position) {
         final String subName = subjects.get(position).getName();
         holder.subjectName.setText(subName);
-        holder.attendanceProgress.setProgress(75);
-        holder.attendanceProgress.setSecondaryProgress(25);
+        updateAttendedanceViews(subName,holder);
 
         holder.classAttendedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addClassRecord(subName,1);
+                updateAttendedanceViews(subName,holder);
             }
         });
         holder.classNotAttendedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addClassRecord(subName,0);
+                updateAttendedanceViews(subName,holder);
             }
         });
+    }
+
+    private void updateAttendedanceViews(String subName,HomeRLViewHolder holder){
+        Pair<Integer,Integer> attendesStatus=db.getheldattended(subName);
+        int classHeld = attendesStatus.first;
+        int classAttended = attendesStatus.second;
+        int attendedPercent = (classAttended/classHeld)*100;
+        holder.attendanceProgress.setProgress(attendedPercent);
+        holder.attendanceProgress.setSecondaryProgress(100 - attendedPercent);
+        holder.attendanceFraction.setText(classAttended+"/"+classHeld);
+        holder.attendanceStatus.setText("You may leave next "+((4*classAttended/3)-classHeld)+" classes");
     }
 
     private void addClassRecord(String subName, int attendedStatus){
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss:SSS a zzz");
         ClassRecord classRecord = new ClassRecord(subName,sdf.format(date).toString(),attendedStatus);
-        Subjectdb db = new Subjectdb(context);
+
         db.addclassrecord(classRecord);
     }
 
