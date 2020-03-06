@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
         db = new Subjectdb(getContext());
         fetchSubjectsData();
         handleAddSubjectButtonClick(getContext());
-        homeCustomRLAdapter = new HomeCustomRLAdapter(subjects);
+        homeCustomRLAdapter = new HomeCustomRLAdapter(subjects,getContext());
         subjectsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         subjectsRecyclerView.setAdapter(homeCustomRLAdapter);
         homeCustomRLAdapter.notifyDataSetChanged();
