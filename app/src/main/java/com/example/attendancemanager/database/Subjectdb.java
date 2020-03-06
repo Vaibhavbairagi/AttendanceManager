@@ -31,7 +31,7 @@ public class Subjectdb extends SQLiteOpenHelper
     private static String dates_topics="topics";
 
 
-    public Subjectdb(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public Subjectdb(@Nullable Context context) {
         super(context, databasename, null, databaseversion);
     }
 
