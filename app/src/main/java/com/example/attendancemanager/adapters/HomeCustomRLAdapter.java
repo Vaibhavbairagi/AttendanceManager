@@ -67,11 +67,24 @@ public class HomeCustomRLAdapter extends RecyclerView.Adapter<HomeCustomRLAdapte
         Pair<Integer,Integer> attendesStatus=db.getheldattended(subName);
         int classHeld = attendesStatus.first;
         int classAttended = attendesStatus.second;
-        int attendedPercent = (classAttended/classHeld)*100;
-        holder.attendanceProgress.setProgress(attendedPercent);
-        holder.attendanceProgress.setSecondaryProgress(100 - attendedPercent);
+        double attendedPercent;
+        if(classHeld==0)
+            attendedPercent=0;
+        else
+            attendedPercent=(double)((double)classAttended/(double)classHeld)*100;
+        holder.attendanceProgress.setProgress((int)attendedPercent);
+        holder.attendanceProgress.setSecondaryProgress((int)(100 - (int)attendedPercent));
+        holder.attendancePercent.setText(""+String.format("%.2f",attendedPercent));
         holder.attendanceFraction.setText(classAttended+"/"+classHeld);
-        holder.attendanceStatus.setText("You may leave next "+((4*classAttended/3)-classHeld)+" classes");
+        int canleave=((4*classAttended/3)-classHeld);
+        if(canleave>0)
+        {
+            holder.attendanceStatus.setText("You may leave next "+canleave+" classes");
+        }
+        else
+        {
+            holder.attendanceStatus.setText("You cannot leave any classes");
+        }
     }
 
     private void addClassRecord(String subName, int attendedStatus){

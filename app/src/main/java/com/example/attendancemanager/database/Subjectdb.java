@@ -45,7 +45,7 @@ public class Subjectdb extends SQLiteOpenHelper
                 ");";
 
         String create_table_dates="create table "+table_dates+"("+
-                dates_subjectname+" varchar primary key,"+
+                dates_subjectname+" varchar,"+
                 dates_date+" varchar,"+
                 dates_attended+" integer,"+
                 dates_topics+" text"+
