@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
@@ -103,7 +104,7 @@ public class Subjectdb extends SQLiteOpenHelper
                 subjectlist.add(subject);
             }while (cursor.moveToNext());
         }
-
+        cursor.close();
         return subjectlist;
     }
 
@@ -127,6 +128,16 @@ public class Subjectdb extends SQLiteOpenHelper
     public void changeattendedstatus(ClassRecord record)
     {
         SQLiteDatabase db=this.getWritableDatabase();
+
+        if(record.getAttended()==1)
+        {
+            record.setAttended(0);
+        }
+        else
+        {
+            record.setAttended(1);
+        }
+
         ContentValues values=new ContentValues();
         values.put(dates_attended,record.getAttended());
 
@@ -163,9 +174,31 @@ public class Subjectdb extends SQLiteOpenHelper
                 record.setTopics(cursor.getString(3));
             } while(cursor.moveToNext());
         }
-
+        cursor.close();
         return classrecordlist;
     }
 
     /*-----------------------------------------------------------------------*/
+
+    public Pair<Integer,Integer> getheldattended(String subjectname)
+    {
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        String query="select * from "+table_dates+" where "+dates_subjectname+"=?";
+        Cursor cursor=db.rawQuery(query,new String[] {subjectname});
+        int held=cursor.getCount();
+
+        int attended=0;
+        if(cursor.moveToFirst())
+        {
+            do {
+                if(cursor.getInt(2)==1)
+                    attended++;
+
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return new Pair<>(held,attended);
+    }
 }
