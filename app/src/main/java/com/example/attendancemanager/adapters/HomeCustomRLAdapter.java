@@ -3,6 +3,8 @@ package com.example.attendancemanager.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +34,8 @@ public class HomeCustomRLAdapter extends RecyclerView.Adapter<HomeCustomRLAdapte
     @Override
     public void onBindViewHolder(@NonNull HomeRLViewHolder holder, int position) {
         holder.subjectName.setText(subjects.get(position).getName());
+        holder.attendanceProgress.setProgress(75);
+        holder.attendanceProgress.setSecondaryProgress(25);
     }
 
     @Override
@@ -39,11 +43,25 @@ public class HomeCustomRLAdapter extends RecyclerView.Adapter<HomeCustomRLAdapte
         return subjects.size();
     }
 
+    public void update(ArrayList<Subject> data) {
+        subjects.clear();
+        subjects.addAll(data);
+        notifyDataSetChanged();
+    }
+
     static class HomeRLViewHolder extends RecyclerView.ViewHolder{
-        private TextView subjectName;
+        private TextView subjectName,attendanceFraction,attendanceStatus,attendancePercent;
+        private ProgressBar attendanceProgress;
+        private ImageButton classAttendedBtn,classNotAttendedBtn;
         HomeRLViewHolder(@NonNull View itemView) {
             super(itemView);
             subjectName = itemView.findViewById(R.id.subject_name);
+            attendanceFraction = itemView.findViewById(R.id.sub_attendance_fraction);
+            attendanceStatus= itemView.findViewById(R.id.sub_attendance_status);
+            attendanceProgress = itemView.findViewById(R.id.attendence_progress);
+            classAttendedBtn= itemView.findViewById(R.id.class_attended_imgbtn);
+            classNotAttendedBtn= itemView.findViewById(R.id.class_not_attended_imgbtn);
+            attendancePercent = itemView.findViewById(R.id.sub_attendance_percent);
         }
     }
 }
