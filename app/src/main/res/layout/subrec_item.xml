@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/subrec_item_decor"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rec_date"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="01-01-20"
+        android:padding="10dp"
+        android:layout_alignBaseline="@+id/rec_attended"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rec_attended"
+        android:layout_toRightOf="@+id/rec_date"
+        android:switchMinWidth="70dp"
+        android:padding="10dp"
+        android:checked="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rec_topic"
+        android:textSize="15sp"
+        android:layout_toRightOf="@+id/rec_attended"
+        android:padding="10dp"
+        android:text="abcdefghijklmnpqrstuvwxyzabcdefghijklmnpqrstuvwxyzabcdefghijklmnpqrstuvwxyzabcdefghijklmnpqrstuvwxyzabcdefghijklmnpqrstuvwxyz"/>
+
+
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package com.example.attendancemanager.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.attendancemanager.R;
 import com.example.attendancemanager.database.Subjectdb;
 import com.example.attendancemanager.pojos.ClassRecord;
 import com.example.attendancemanager.pojos.Subject;
+import com.example.attendancemanager.subrec;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +47,20 @@ public class HomeCustomRLAdapter extends RecyclerView.Adapter<HomeCustomRLAdapte
     public void onBindViewHolder(@NonNull final HomeRLViewHolder holder, int position) {
         final String subName = subjects.get(position).getName();
         holder.subjectName.setText(subName);
+
+        //Intent added by shobhit--------------------------
+        holder.subjectName.setOnClickListener(new TextView.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent=new Intent(context, subrec.class);
+                intent.putExtra("subjectname",subName);
+                context.startActivity(intent);
+            }
+        });
+        //---------------------------------------------------
+
         updateAttendedanceViews(subName,holder);
 
         holder.classAttendedBtn.setOnClickListener(new View.OnClickListener() {

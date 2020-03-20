@@ -172,6 +172,7 @@ public class Subjectdb extends SQLiteOpenHelper
                 record.setDate(cursor.getString(1));;
                 record.setAttended(cursor.getInt(2));
                 record.setTopics(cursor.getString(3));
+                classrecordlist.add(record);
             } while(cursor.moveToNext());
         }
         cursor.close();
