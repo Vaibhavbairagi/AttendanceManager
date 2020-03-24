@@ -29,6 +29,7 @@ public class subrec extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
     }
 }

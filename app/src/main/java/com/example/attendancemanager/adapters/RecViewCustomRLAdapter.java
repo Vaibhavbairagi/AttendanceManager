@@ -1,9 +1,12 @@
 package com.example.attendancemanager.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -62,7 +65,7 @@ public class RecViewCustomRLAdapter extends RecyclerView.Adapter<RecViewCustomRL
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position)
     {
         final ClassRecord record=recordlist.get(position);
 
@@ -80,9 +83,58 @@ public class RecViewCustomRLAdapter extends RecyclerView.Adapter<RecViewCustomRL
 
         boolean bool=(record.getAttended()==1);
         holder.rec_attended.setChecked(bool);
+        holder.rec_attended.setOnClickListener(new Switch.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Switch s= (Switch) v;
+                AlertDialog.Builder builder=new AlertDialog.Builder(v.getContext());
+                builder.setCancelable(false);
+                builder.setTitle("ATTENDANCE");
+                if(record.getAttended()==1)
+                {
+                    builder.setMessage("Are you sure you want to change this class to NOT ATTENDED?");
+                }
+                else if(record.getAttended()==0)
+                {
+                    builder.setMessage("Are you sure you want to change this class to ATTENDED?");
+                }
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(record.getAttended()==0)
+                        {
+                            s.setChecked(true);
+                        }
+                        else if(record.getAttended()==1)
+                        {
+                            s.setChecked(false);
+                        }
+                        db.changeattendedstatus(record);
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(record.getAttended()==0)
+                        {
+                            s.setChecked(false);
+                        }
+                        else if(record.getAttended()==1)
+                        {
+                            s.setChecked(true);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialog=builder.create();
+                alertDialog.show();
+            }
+        });
 
         holder.rec_topic.setText(record.getTopics());
-
     }
 
     @Override
