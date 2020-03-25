@@ -3,10 +3,13 @@ package com.example.attendancemanager.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -44,6 +47,7 @@ public class RecViewCustomRLAdapter extends RecyclerView.Adapter<RecViewCustomRL
     {
         TextView rec_date,rec_topic;
         Switch rec_attended;
+        ImageButton rec_edit;
 
         public ViewHolder(View view)
         {
@@ -51,6 +55,7 @@ public class RecViewCustomRLAdapter extends RecyclerView.Adapter<RecViewCustomRL
             this.rec_date=view.findViewById(R.id.rec_date);
             this.rec_attended=view.findViewById(R.id.rec_attended);
             this.rec_topic=view.findViewById(R.id.rec_topic);
+            this.rec_edit=view.findViewById(R.id.rec_edit);
         }
     }
 
@@ -135,6 +140,42 @@ public class RecViewCustomRLAdapter extends RecyclerView.Adapter<RecViewCustomRL
         });
 
         holder.rec_topic.setText(record.getTopics());
+
+        holder.rec_edit.setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater=LayoutInflater.from(v.getContext());
+                View dialogview=inflater.inflate(R.layout.subrec_edittopic,null);
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(v.getContext());
+                builder.setView(dialogview);
+
+                final EditText editText=dialogview.findViewById(R.id.edittopic_edittext);
+                editText.setText(record.getTopics());
+
+                builder.setTitle("TOPICS TAUGHT");
+                builder.setCancelable(false);
+                builder.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String topics= editText.getText().toString();
+                        record.setTopics(topics);
+                        db.modifytopics(record);
+                        dialog.dismiss();
+                        notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog=builder.create();
+                dialog.show();
+            }
+        });
     }
 
     @Override
